@@ -2,11 +2,12 @@ import { DynatraceProblem, EntityAnalysis } from '@/types/dynatrace';
 
 // Mock data service for demonstration - replace with actual Dynatrace API calls
 export class DynatraceApiService {
-  private baseUrl = 'https://your-tenant.dynatrace.com/api/v2';
-  private apiToken = 'your-api-token'; // In production, this should be from environment
+
+  private baseUrl: string = 'https://dynatrace.tax.gov.ma/e/6743d6ad-c76a-4d3e-8f43-62e3a9d0735e/api/v2';
+  private apiToken: string = 'dt0c01.BU5GNCJMOOUEP6A3Z6NL5P5S.GJDC74JXTS3V6NMFU3JEQXAAOEEUGYKDZGE5QEVXCMPEFRSZIM5P4R3TEHTCECCO';
 
   async getClosedProblems(timeRange: number): Promise<DynatraceProblem[]> {
-    // Mock data for demonstration
+    // // Mock data for demonstration
     const mockProblems: DynatraceProblem[] = [
       {
         problemId: 'PROBLEM-1',
@@ -122,8 +123,49 @@ export class DynatraceApiService {
 
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     return mockProblems;
+
+
+
+    /////////////////////////////////////////////////////
+    // const now = Date.now();
+    // const from = new Date(now - timeRange * 60 * 60 * 1000).toISOString();
+    // const to = new Date(now).toISOString();
+    // const url = `${this.baseUrl}/problems?from=${from}&to=${to}&status=CLOSED&pageSize=100`;
+
+    // const response = await fetch(url, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Authorization': `Api-Token ${this.apiToken}`,
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json'
+    //   }
+    // });
+    // console.log(response)
+    // if (!response.ok) {
+    //   throw new Error(`Erreur Dynatrace API: ${response.status}`);
+    // }
+
+    // const data = await response.json();
+
+    // // Adapter le parsing si nécessaire
+    // const problems: DynatraceProblem[] = data.problems.map((p: any) => ({
+    //   problemId: p.problemId,
+    //   displayId: p.displayId,
+    //   title: p.title,
+    //   impactLevel: p.impactLevel,
+    //   severityLevel: p.severityLevel,
+    //   status: p.status,
+    //   startTime: p.startTime,
+    //   endTime: p.endTime,
+    //   affectedEntities: (p.affectedEntities || []).map((e: any) => ({
+    //     entityId: e.entityId,
+    //     name: e.name,
+    //     entityType: e.entityType
+    //   }))
+    // }));
+    // return problems;
   }
 
   processProblemsData(problems: DynatraceProblem[]): EntityAnalysis[] {
@@ -131,10 +173,10 @@ export class DynatraceApiService {
 
     problems.forEach(problem => {
       const duration = problem.endTime ? problem.endTime - problem.startTime : 0;
-      
+
       problem.affectedEntities.forEach(entity => {
         const key = entity.entityId;
-        
+
         if (!entityMap.has(key)) {
           entityMap.set(key, {
             entityId: entity.entityId,
@@ -163,8 +205,8 @@ export class DynatraceApiService {
 
     // Calculate average duration
     entityMap.forEach(analysis => {
-      analysis.averageDuration = analysis.totalProblems > 0 
-        ? analysis.cumulativeDuration / analysis.totalProblems 
+      analysis.averageDuration = analysis.totalProblems > 0
+        ? analysis.cumulativeDuration / analysis.totalProblems
         : 0;
     });
 
