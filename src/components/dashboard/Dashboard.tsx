@@ -5,6 +5,7 @@ import { DashboardHeader } from './DashboardHeader';
 import { FilterPanel } from './FilterPanel';
 import { DurationChart } from './DurationChart';
 import { TrendChart } from './TrendChart';
+import { AIInsightsPanel } from './AIInsightsPanel';
 import { EntityTable } from './EntityTable';
 import { useToast } from '@/hooks/use-toast';
 
@@ -94,6 +95,10 @@ export function Dashboard() {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
           <DurationChart data={filteredData} isLoading={isLoading} />
           <TrendChart data={filteredData} isLoading={isLoading} />
+        </div>
+        
+        <div className="mb-6">
+          <AIInsightsPanel data={filteredData} isDataLoading={isLoading} />
         </div>
         
         <EntityTable data={filteredData} isLoading={isLoading} />
